@@ -1,28 +1,32 @@
 import express from "express";
 
-import contactsService from "../../models/contacts/contacts.js";
+import contactsController from "../../controllers/contacts-controller.js";
 
-const contactsRouter = express.Router()
+import validateBody from "../../decorators/validateBody.js";
+import contactAddSchema from "../../schemas/contact-schemas.js";
 
-contactsRouter.get('/', async (req, res, next) => {
-  const result = await contactsService.listContacts();
-  res.json(result);
-})
+const contactsRouter = express.Router();
 
-contactsRouter.get('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+contactsRouter.get("/", contactsController.getAll);
 
-contactsRouter.post('/', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+contactsRouter.get("/:id", contactsController.getById);
 
-contactsRouter.delete('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+contactsRouter.post(
+  "/",
+  validateBody(contactAddSchema),
+  contactsController.add
+);
 
-contactsRouter.put('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+contactsRouter.delete(
+  "/:id",
+  validateBody(contactAddSchema),
+  contactsController.deleteById
+);
+
+contactsRouter.put(
+  "/:id",
+  validateBody(contactAddSchema),
+  contactsController.updateById
+);
 
 export default contactsRouter;
