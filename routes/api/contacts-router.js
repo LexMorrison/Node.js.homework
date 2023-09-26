@@ -4,9 +4,11 @@ import contactsController from "../../controllers/contacts-controller.js";
 
 import validateBody from "../../decorators/validateBody.js";
 import * as contactSchema from "../../models/Contacts.js";
-import { isValidId } from "../../middleware/index.js";
+import { authenticate, isValidId } from "../../middleware/index.js";
 
 const contactsRouter = express.Router();
+
+contactsRouter.use(authenticate);
 
 contactsRouter.get("/", contactsController.getAll);
 
