@@ -6,6 +6,7 @@ import { authenticate, upload } from "../../middleware/index.js";
 import {
   userRegisterSchema,
   userLoginSchema,
+  userEmailSchema,
 } from "../../middleware/validation/users-validation.js";
 
 const authRouter = express.Router();
@@ -25,4 +26,13 @@ authRouter.patch(
   upload.single("avatar"),
   authController.updateAvatar
 );
+
+authRouter.get("/verify/:verificationToken", authController.verify);
+
+authRouter.post(
+  "/verify",
+  validateBody(userEmailSchema),
+  authController.resendVerifyEmail
+);
+
 export default authRouter;
